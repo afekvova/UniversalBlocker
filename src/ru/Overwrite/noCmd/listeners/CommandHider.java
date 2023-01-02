@@ -1,34 +1,32 @@
 package ru.Overwrite.noCmd.listeners;
 
-import org.bukkit.event.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
-import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
+import org.bukkit.event.player.PlayerCommandSendEvent;
 import ru.Overwrite.noCmd.Main;
 
-public class TabComplete implements Listener {
+public class CommandHider implements Listener {
 	
 	Main main;	
-	public TabComplete(Main main) {
+	public CommandHider(Main main) {
         Bukkit.getPluginManager().registerEvents(this, main);
         this.main = main;
         main.getLogger().info("command-hider - enabled");
     }
 	
 	@EventHandler
-	  public void onTabComplete(AsyncTabCompleteEvent e) {
-		if (!(e.getSender() instanceof Player)) {
-		  return;
-		}
-		FileConfiguration config = Main.getInstance().getConfig();
-		Player p = (Player)e.getSender();
-		for (String command : config.getStringList("blocked-commands.args-tab-complete")) {
-		  if (e.getBuffer().equalsIgnoreCase("/" + command + " ") && !isAdmin(p)) {
-			e.setCancelled(true);
+	  public void onCommandSend(PlayerCommandSendEvent e) {
+	    FileConfiguration config = Main.getInstance().getConfig();
+	    Player p = e.getPlayer();
+	    if (!isAdmin(p)) {
+	      e.getCommands().removeIf(cmd -> config.getStringList("blocked-commands.lite").contains(cmd) || config.getStringList("blocked-commands.full").contains(cmd));
+	      if (config.getBoolean("settings.enable-blocksyntax")) {
+	        e.getCommands().removeIf(cmd -> cmd.contains(":"));
 	      }
-	    }
+	    } 
 	  }
 	
 	private boolean isAdmin(Player p) {

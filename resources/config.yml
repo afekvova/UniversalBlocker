@@ -1,23 +1,3 @@
-# Сообщения плагина
-messages: 
-  # Сообщения, которые будут высвечиваться, когда игрок введет запрещенную команду
-  blockedcommand: '&7&l(&c&l!&7&l) &3Команда &8(&4/%cmd%&8) &3не доступна с вашим уровнем доступа'
-  notify-cmd: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cиспользовал запрещеннную команду &8(&4/%cmd%&8)'
-  # Сообщения, которые будет высвечиваться, когда игрок введет запрещенный символ
-  blockedsymbol: '&7&l(&c&l!&7&l) &3Нельзя использовать &8(&4%symbol%&8) &3в командах'
-  blockedchatsymbol: '&7&l(&c&l!&7&l) &cВаше сообщение содержит запрещенные символы'
-  notify-symbol: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cиспользовал запрещенный символ &8(&4%symbol%&8)'
-  notify-chatsymbol: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cиспользовал запрещеннный символ в чате &8(&4%chatsymbol%&8)'
-  # Сообщения, которые будет высвечиваться, когда игрок введет запрещенный символ
-  blockedword: '&7&l(&c&l!&7&l) &3Нельзя использовать слово &4%word%'
-  notify-blockedword: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cиспользовал запрещенное слово &8(&4%word%&8)'
-  # Сообщения которые будут высвечиваться при попытке написать команду через :
-  blocksyntax: '&7&l(&c&l!&7&l) &cКоманды с двоеточием запрещены!'
-  blocksyntaxnotify: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cпопытался использовать команду с двоеточием &8(&4%cmd%&8)'
-  # Сообщения при превышении лимитов
-  maxnumbers-msg: '&7&l(&c&l!&7&l) &eМаксимальное кол-во цифр в сообщении &a%limit%'
-  notify-maxnumbers: '&7&l(&c&l!&7&l) &cИгрок &3%player% &cиспользовал более %limit% цифр в сообщении &8(&4%msg%&8)'
-
 settings: 
   # Включить ли отправку анонимной статистики (пожалуйста не отключайте)
   enable-metrics: true
@@ -26,22 +6,28 @@ settings:
   # Отключать ли сервер при отключении плагина
   shutdown-on-disable: false
   # Включение/выключение функций плагина
-  enable-allowed-chars: true
   enable-words-blocker: true
+  enable-numbers-check: true
+  enable-allowed-chars: true
   enable-command-blocker: true
   enable-console-blocker: true
   enable-rcon-blocker: true
   enable-symbol-blocker: true
   enable-tab-complere-blocker: true
-  enable-numbers-check: true
   # Блокировка команд через : (bukkit:pl и т.п.)
-  enable-blocksyntax: true 
-  
+  enable-blocksyntax: true
+  # Скрывать ли заблокированные команды из таб комплита
+  hide-blocked-commands-from-tab-comple: true
+  # Включить ли тайтлы при "нарушениях" игроков
+  enable-titles: true
+  # Включить ли звуковые оповещения при "нарушениях" игроков
+  enable-sounds: true
+    
 # На каких игроков не будут действовать никакие запреты (можно оставить пустым)
 excluded-players:
- - 'Overwrite'
- - 'test99999'
- 
+  - 'Overwrite'
+  - 'test99999'
+
 chat-settings:
   # Какие символы можно писать в чате
   allowed-chars: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ~`1!2@3#4$5%6^7&§89(0)-_=+*|[{]}\;:"',<.>/?!№
@@ -59,7 +45,23 @@ chat-settings:
    - '-con'
    - '-opme'
    - 'LOyoujoLIHACKACTIVITED'
- 
+
+# Запрещенные символы в командах
+symbols:
+  # Список запрещенных символов
+  blocked-symbols:
+   - '-ff'
+   - '-uu'
+   - '.*'
+   - '**'
+  # На какие команды это не распространяется (можно оставить пустым)
+  excluded-commands:
+   - 'l'
+   - 'login'
+   - 'reg'
+   - 'register'
+   - 'pas'
+   
 # Запрещенные команды
 blocked-commands:
   # Можно прописывать, имея право ublocker.bypass.commands
@@ -88,11 +90,13 @@ blocked-commands:
    - 'rg remove -w world spawn'
    - 'kill *'
    - 'gm 1 *'
+   - 'op @a'
   # Блокировка команд rcon
   rcon:
    - 'rg remove -w world spawn'
    - 'kill *'
    - 'gm 1 *'
+   - 'op @a'
   # Блокировка заполнения аргументов к командам
   args-tab-complete:
    - 'ver'
@@ -104,18 +108,26 @@ blocked-commands:
    - 'bukkit:about'
    - 'bukkit:?'
    - 'bukkit:help'
-   
-# Запрещенные символы в командах
-symbols:
-  # Список запрещенных символов
-  blocked-symbols:
-   - '-ff'
-   - '-uu'
-   - '.*'
-   - '**'
-  # На какие команды это не распространяется (можно оставить пустым)
-  excluded-commands:
-   - 'l'
-   - 'login'
-   - 'reg'
-   - 'register'
+  
+# Настройка звкуков
+sounds:
+  # Звук оповещения админов
+  admin-notify:
+    sound: BLOCK_NOTE_BLOCK_PLING
+    volume: 1.0
+    pitch: 1.0
+  # Звук при заблокированной команде
+  blocked-command:
+    sound: ENTITY_ITEM_BREAK
+    volume: 1.0
+    pitch: 1.0
+  # Звук при заблокированном символе
+  blocked-symbol:
+    sound: ENTITY_ITEM_BREAK
+    volume: 1.0
+    pitch: 1.0
+  # Звук при запрещенном действии в чате
+  blocked-chat:
+    sound: BLOCK_CHAIN_BREAK
+    volume: 1.0
+    pitch: 1.0
