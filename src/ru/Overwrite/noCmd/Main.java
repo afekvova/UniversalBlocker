@@ -12,6 +12,15 @@ public class Main extends JavaPlugin {
   public static Main getInstance() {
      return instance;
   }
+	
+  private static final int SUB_VERSION = Integer.parseInt(
+       Bukkit.getServer().getClass().getPackage().getName()
+               .replace(".", ",")
+               .split(",")[3]
+               .replace("1_", "")
+               .replaceAll("_R\\d", "")
+               .replace("v", "")
+  );
   
   public void onEnable() {
 	  if (getServer().getName().equals("CraftBukkit")) {
@@ -42,8 +51,10 @@ public class Main extends JavaPlugin {
     if (getConfig().getBoolean("settings.enable-command-blocker")) {
         new CommandBlocker(this);
     }
-    if (getConfig().getBoolean("settings.hide-blocked-commands-from-tab-comple")) {
+    if (SUB_VERSION >= 13 && getConfig().getBoolean("settings.hide-blocked-commands-from-tab-comple")) {
         new CommandHider(this);
+    } else {
+    	getLogger().info("Функция скрытия команд из таб-комплита не доступна на вашей версии!");
     }
     if (getConfig().getBoolean("settings.enable-console-blocker")) {
         new ConsoleBlocker(this);
