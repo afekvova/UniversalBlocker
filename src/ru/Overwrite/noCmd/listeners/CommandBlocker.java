@@ -14,6 +14,8 @@ import ru.Overwrite.noCmd.utils.RGBcolors;
 
 public class CommandBlocker implements Listener {
 	
+		FileConfiguration config = Main.getInstance().getConfig();
+		FileConfiguration messageconfig = Config.getFile("message.yml");
 	Main main;	
 	public CommandBlocker(Main main) {
         Bukkit.getPluginManager().registerEvents(this, main);
@@ -23,8 +25,6 @@ public class CommandBlocker implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	  public void onLiteCommand(PlayerCommandPreprocessEvent e) {
-		FileConfiguration config = Main.getInstance().getConfig();
-		FileConfiguration messageconfig = Config.getFile("message.yml");
 		String com = e.getMessage();
 	    Player p = e.getPlayer();
 	    for (String command : config.getStringList("blocked-commands.lite")) {
@@ -77,7 +77,6 @@ public class CommandBlocker implements Listener {
       }
 	
 	private boolean isAdmin(Player p) {
-		FileConfiguration config = Main.getInstance().getConfig();
 	  if (p.hasPermission("ublocker.bypass.commands") || config.getStringList("excluded-players").contains(p.getName())) {
 		  return true;
 	  }

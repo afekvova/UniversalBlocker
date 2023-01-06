@@ -9,6 +9,7 @@ import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import ru.Overwrite.noCmd.Main;
 
 public class TabComplete implements Listener {
+		FileConfiguration config = Main.getInstance().getConfig();
 	
 	Main main;	
 	public TabComplete(Main main) {
@@ -22,7 +23,6 @@ public class TabComplete implements Listener {
 		if (!(e.getSender() instanceof Player)) {
 		  return;
 		}
-		FileConfiguration config = Main.getInstance().getConfig();
 		Player p = (Player)e.getSender();
 		for (String command : config.getStringList("blocked-commands.args-tab-complete")) {
 		  if (e.getBuffer().equalsIgnoreCase("/" + command + " ") && !isAdmin(p)) {
@@ -32,7 +32,6 @@ public class TabComplete implements Listener {
 	  }
 	
 	private boolean isAdmin(Player p) {
-		FileConfiguration config = Main.getInstance().getConfig();
 	  if (p.hasPermission("ublocker.bypass.tabcomplete") || config.getStringList("excluded-players").contains(p.getName())) {
 		  return true;
 	  }

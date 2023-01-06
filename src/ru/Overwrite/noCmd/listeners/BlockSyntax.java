@@ -13,6 +13,8 @@ import ru.Overwrite.noCmd.utils.Config;
 import ru.Overwrite.noCmd.utils.RGBcolors;
 
 public class BlockSyntax implements Listener {
+	  FileConfiguration config = Main.getInstance().getConfig();
+	   FileConfiguration messageconfig = Config.getFile("message.yml");
 	 
 	Main main;	
 	public BlockSyntax(Main main) {
@@ -23,10 +25,8 @@ public class BlockSyntax implements Listener {
 	
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onCommand(PlayerCommandPreprocessEvent e) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	  Player p = e.getPlayer();
 	 if (e.getMessage().split(" ")[0].contains(":") && !config.getStringList("excluded-players").contains(p.getName())) {
-	   FileConfiguration messageconfig = Config.getFile("message.yml");
 	   e.setCancelled(true);
 	   p.sendMessage(RGBcolors.translate(messageconfig.getString("messages.blocksyntax")));
 	   if (config.getBoolean("settings.enable-sounds")) {

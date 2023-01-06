@@ -8,6 +8,7 @@ import org.bukkit.event.server.RemoteServerCommandEvent;
 import ru.Overwrite.noCmd.Main;
 
 public class RconBlocker implements Listener {
+      FileConfiguration config = Main.getInstance().getConfig();
 	
 	Main main;	
 	public RconBlocker(Main main) {
@@ -24,7 +25,6 @@ public class RconBlocker implements Listener {
   }
 	 
   private boolean rconBoolean(String message) {
-      FileConfiguration config = Main.getInstance().getConfig();
 	  for (String s : config.getStringList("blocked-commands.rcon")) {
         if (s.equalsIgnoreCase(message))
 		  return true; 

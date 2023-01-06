@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerCommandSendEvent;
 import ru.Overwrite.noCmd.Main;
 
 public class CommandHider implements Listener {
+	    FileConfiguration config = Main.getInstance().getConfig();
 	
 	Main main;	
 	public CommandHider(Main main) {
@@ -19,7 +20,6 @@ public class CommandHider implements Listener {
 	
 	@EventHandler
 	  public void onCommandSend(PlayerCommandSendEvent e) {
-	    FileConfiguration config = Main.getInstance().getConfig();
 	    Player p = e.getPlayer();
 	    if (!isAdmin(p)) {
 	      e.getCommands().removeIf(cmd -> config.getStringList("blocked-commands.lite").contains(cmd) || config.getStringList("blocked-commands.full").contains(cmd));
@@ -30,7 +30,6 @@ public class CommandHider implements Listener {
 	  }
 	
 	private boolean isAdmin(Player p) {
-		FileConfiguration config = Main.getInstance().getConfig();
 	  if (p.hasPermission("ublocker.bypass.tabcomplete") || config.getStringList("excluded-players").contains(p.getName())) {
 		  return true;
 	  }

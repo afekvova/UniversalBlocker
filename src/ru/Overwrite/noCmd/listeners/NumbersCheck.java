@@ -13,6 +13,8 @@ import ru.Overwrite.noCmd.utils.RGBcolors;
 import ru.Overwrite.noCmd.utils.Config;
 
 public class NumbersCheck implements Listener {
+	  FileConfiguration config = Main.getInstance().getConfig();
+	      FileConfiguration messageconfig = Config.getFile("message.yml");
 	
 	Main main;	
 	public NumbersCheck(Main main) {
@@ -23,7 +25,6 @@ public class NumbersCheck implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	  public void onChatNumber(AsyncPlayerChatEvent e) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	    String message = e.getMessage();
 	    Player p = e.getPlayer();
 	    int count = 0;
@@ -35,7 +36,6 @@ public class NumbersCheck implements Listener {
 	        count++; 
 	    } 
 	    if (count > limit && !isAdmin(p)) {
-	      FileConfiguration messageconfig = Config.getFile("message.yml");
 	      p.sendMessage(RGBcolors.translate(messageconfig.getString("messages.maxnumbers-msg")));
 	      e.setCancelled(true);
 	      if (config.getBoolean("settings.enable-sounds")) {
@@ -62,7 +62,6 @@ public class NumbersCheck implements Listener {
 	  }
 	
 	private boolean isAdmin(Player p) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	  if (p.hasPermission("ublocker.bypass.numbers") || config.getStringList("excluded-players").contains(p.getName())) {
 		  return true;
 	  }

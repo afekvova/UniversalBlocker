@@ -8,6 +8,7 @@ import org.bukkit.event.server.ServerCommandEvent;
 import ru.Overwrite.noCmd.Main;
 
 public class ConsoleBlocker implements Listener {
+	  FileConfiguration config = Main.getInstance().getConfig();
 	
 	Main main;	
 	public ConsoleBlocker(Main main) {
@@ -24,7 +25,6 @@ public class ConsoleBlocker implements Listener {
   }
  
   private boolean consoleBoolean(String message) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	  for (String s : config.getStringList("blocked-commands.console")) {
 	    if (s.equalsIgnoreCase(message))
 	      return true; 

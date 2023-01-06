@@ -13,6 +13,8 @@ import ru.Overwrite.noCmd.utils.RGBcolors;
 import ru.Overwrite.noCmd.utils.Config;
 
 public class ChatFilter implements Listener {
+      FileConfiguration config = Main.getInstance().getConfig();
+		  FileConfiguration messageconfig = Config.getFile("message.yml");
 	
 	Main main;	
 	public ChatFilter(Main main) {
@@ -23,11 +25,9 @@ public class ChatFilter implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChatMessage(AsyncPlayerChatEvent e) {
-      FileConfiguration config = Main.getInstance().getConfig();
 	  String message = e.getMessage();
 	  Player p = e.getPlayer();
 	  if (message != null && containsBlockedChars(message) && !isAdmin(p)) {
-		  FileConfiguration messageconfig = Config.getFile("message.yml");
 	      p.sendMessage(RGBcolors.translate(messageconfig.getString("messages.blockedchatsymbol")));
 	      e.setCancelled(true);
 	      if (config.getBoolean("settings.enable-sounds")) {
@@ -51,7 +51,6 @@ public class ChatFilter implements Listener {
 	}
 	
 	private boolean isAdmin(Player p) {
-		FileConfiguration config = Main.getInstance().getConfig();
 	  if (p.hasPermission("ublocker.bypass.chatsymbol") || config.getStringList("excluded-players").contains(p.getName())) {
 		  return true;
 	  }
@@ -59,7 +58,6 @@ public class ChatFilter implements Listener {
 	}
 	  
     private boolean containsBlockedChars(String message) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	    char[] d = message.toLowerCase().toCharArray();
 	    int b = d.length;
         for (int f = 0; f < b; f++) {

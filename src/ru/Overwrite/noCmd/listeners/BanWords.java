@@ -13,6 +13,9 @@ import ru.Overwrite.noCmd.utils.RGBcolors;
 
 public class BanWords implements Listener {
 	
+	      FileConfiguration messageconfig = Config.getFile("message.yml");
+	  FileConfiguration config = Main.getInstance().getConfig();
+
 	Main main;	
 	public BanWords(Main main) {
         Bukkit.getPluginManager().registerEvents(this, main);
@@ -22,12 +25,10 @@ public class BanWords implements Listener {
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
-	  FileConfiguration config = Main.getInstance().getConfig();
 	  String message = e.getMessage().toLowerCase();
 	  Player p = e.getPlayer();
 	  for (String banword : config.getStringList("chat-settings.ban-words")) {
 	    if (message.contains(banword.toLowerCase()) && !isAdmin(p)) {
-	      FileConfiguration messageconfig = Config.getFile("message.yml");
 	      p.sendMessage(RGBcolors.translate(messageconfig.getString("messages.blockedword")).replace("%word%", banword));
 	      e.setCancelled(true);
 	      if (config.getBoolean("settings.enable-sounds")) {
@@ -53,12 +54,9 @@ public class BanWords implements Listener {
 	  }
 	}
 	
-	private Boolean isAdmin(Player p) {
-		boolean bool = false;
-		FileConfiguration config = Main.getInstance().getConfig();
-	  if (p.hasPermission("ublocker.bypass.banwords") || config.getStringList("excluded-players").contains(p.getName())) {
-		  bool = true;
-	  }
-	  return Boolean.valueOf(bool);
+	private boolean isAdmin(Player p) {
+	  if (p.hasPermission("ublocker.bypass.banwords") || config.getStringList("excluded-players").contains(p.getName())) 
+		  return true;
+	  return false;
 	}
 }
